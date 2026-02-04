@@ -19,8 +19,8 @@ interface EARRecord {
  * - PERCLOS = (閉眼時間 / 測定時間) × 100
  * - 基準:
  *   - PERCLOS < 15%: 正常
- *   - 15% ≤ PERCLOS < 20%: やや疲労
- *   - PERCLOS ≥ 20%: 疲労
+ *   - 15% ≤ PERCLOS < 20%: やや眠い
+ *   - PERCLOS ≥ 20%: 眠い
  *
  * 参考: 米国運輸省などで採用されている標準指標
  */
@@ -30,11 +30,21 @@ export class PERCLOSDetector implements FatigueDetector {
   private readonly EAR_THRESHOLD = 0.2; // 目が閉じていると判定する閾値（80%閉眼に相当）
   private readonly NORMAL_PERCLOS = 15; // 正常範囲の上限 (%)
   private readonly FATIGUE_PERCLOS = 20; // 疲労の境界 (%)
-  private startTime = Date.now(); // 起動時刻を記録
-  private lastUpdateTime = Date.now(); // 前回の更新時刻
+  private startTime = 0; // 測定開始時刻
+  private lastUpdateTime = 0; // 前回の更新時刻
 
   getName(): string {
     return 'PERCLOS';
+  }
+
+  /**
+   * 測定開始時に呼び出して、タイマーとデータをリセット
+   */
+  reset(): void {
+    const now = Date.now();
+    this.startTime = now;
+    this.lastUpdateTime = now;
+    this.earHistory = [];
   }
 
   update(keypoints: Keypoint[]): void {
@@ -68,13 +78,13 @@ export class PERCLOSDetector implements FatigueDetector {
     let level = '正常';
 
     if (perclos >= this.FATIGUE_PERCLOS) {
-      // 20%以上 → 疲労
-      level = '疲労';
+      // 20%以上 → 眠い
+      level = '眠い';
       // PERCLOS 20% = score 60, 30% = score 30, 40%以上 = score 0
       score = Math.max(0, 100 - (perclos - this.FATIGUE_PERCLOS) * 4);
     } else if (perclos >= this.NORMAL_PERCLOS) {
-      // 15-20% → やや疲労
-      level = 'やや疲労';
+      // 15-20% → やや眠い
+      level = 'やや眠い';
       // PERCLOS 15% = score 80, 20% = score 60
       score = 100 - (perclos - this.NORMAL_PERCLOS) * 4;
     } else {

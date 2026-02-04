@@ -101,6 +101,10 @@ class SpotCheckApp {
 
   private async startMeasurement(): Promise<void> {
     try {
+      // タイマーとプログレスバーを初期化
+      this.timerElement.textContent = '30';
+      this.progressElement.style.width = '0%';
+
       this.setState('initializing');
 
       // カメラアクセス
@@ -138,6 +142,10 @@ class SpotCheckApp {
       // 測定開始
       this.setState('measuring');
       this.measurementStartTime = Date.now();
+
+      // PERCLOS検出器を測定開始時刻でリセット
+      this.perclosDetector.reset();
+
       this.isRunning = true;
       this.startDetectionLoop();
       this.startTimer();
@@ -247,7 +255,7 @@ class SpotCheckApp {
     // レベルに応じた色設定
     if (score.level === '正常') {
       this.resultLevelElement.style.color = '#4CAF50'; // 緑
-    } else if (score.level === 'やや疲労') {
+    } else if (score.level === 'やや眠い') {
       this.resultLevelElement.style.color = '#FF9800'; // オレンジ
     } else {
       this.resultLevelElement.style.color = '#F44336'; // 赤
