@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>眠気チェック</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>眠気チェック</h1>
+
+    <!-- 待機状態 -->
+    <div id="idle-state" class="spot-state">
+      <div class="spot-description">
+        <p>30秒間の測定で眠気レベルを判定します。</p>
+        <p>測定中はカメラを見つめてください。</p>
+      </div>
+      <button id="start-btn" class="spot-start-btn">測定開始</button>
+    </div>
+
+    <!-- 測定中状態 -->
+    <div id="measuring-state" class="spot-state" style="display: none;">
+      <div class="camera-toggle-container">
+        <button id="camera-toggle" class="camera-toggle-btn">
+          <span id="camera-toggle-text">カメラ表示: OFF</span>
+        </button>
+      </div>
+
+      <div class="video-container" id="video-container">
+        <video id="webcam" autoplay playsinline></video>
+      </div>
+
+      <div class="spot-timer-container">
+        <div class="spot-timer-label">残り時間</div>
+        <div class="spot-timer" id="timer">30</div>
+        <div class="spot-progress-bar">
+          <div class="spot-progress-fill" id="progress"></div>
+        </div>
+      </div>
+
+      <button id="cancel-btn" class="spot-cancel-btn">中止</button>
+    </div>
+
+    <!-- 結果表示状態 -->
+    <div id="result-state" class="spot-state" style="display: none;">
+      <div class="spot-result-container">
+        <div class="spot-result-title">測定結果</div>
+
+        <div class="spot-result-main">
+          <div class="spot-result-level" id="result-level">正常</div>
+          <div class="spot-result-score-container">
+            <div class="spot-result-label">スコア</div>
+            <div class="spot-result-score" id="result-score">--</div>
+          </div>
+        </div>
+
+        <div class="spot-result-details">
+          <div class="spot-result-perclos">
+            <span class="spot-result-details-label">PERCLOS:</span>
+            <span id="result-perclos">--%</span>
+          </div>
+        </div>
+
+        <button id="retry-btn" class="spot-retry-btn">もう一度測定</button>
+      </div>
+    </div>
+
+    <div class="info" id="info">
+      測定開始ボタンを押してください
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
