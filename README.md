@@ -2,6 +2,10 @@
 
 Webカメラを使って30秒間の測定で眠気レベルを判定するアプリケーションです。
 
+## デモ
+
+🔗 **[https://tsu-nera.github.io/sleepy_checkr/](https://tsu-nera.github.io/sleepy_checkr/)**
+
 ## 機能
 
 - **30秒測定**: カメラを見つめるだけで眠気レベルを判定
