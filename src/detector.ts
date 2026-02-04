@@ -25,8 +25,9 @@ export class FaceDetector {
     console.log('TensorFlow.js backend ready:', tf.getBackend());
 
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
-    const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshTfjsModelConfig = {
-      runtime: 'tfjs',
+    const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshMediaPipeModelConfig = {
+      runtime: 'mediapipe',
+      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619',
       refineLandmarks: true, // 虹彩検出を有効化
       maxFaces: 1,
     };
