@@ -19,10 +19,14 @@ export class FaceDetector {
   async initialize(): Promise<void> {
     console.log('Initializing face detector...');
 
+    // WebGLバックエンドを明示的に初期化
+    await tf.setBackend('webgl');
+    await tf.ready();
+    console.log('TensorFlow.js backend ready:', tf.getBackend());
+
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
-    const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshMediaPipeModelConfig = {
-      runtime: 'mediapipe',
-      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
+    const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshTfjsModelConfig = {
+      runtime: 'tfjs',
       refineLandmarks: true, // 虹彩検出を有効化
       maxFaces: 1,
     };
