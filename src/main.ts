@@ -127,6 +127,11 @@ class SpotCheckApp {
       this.updateInfo('顔検出モデルを読み込んでいます...');
       await this.detector.initialize();
 
+      // モデルのウォームアップ（初回検出）
+      this.updateInfo('モデルを準備しています...');
+      await this.detector.detect(this.video);
+      console.log('Model warmed up');
+
       // PERCLOS検出器の初期化
       this.perclosDetector = new PERCLOSDetector();
 

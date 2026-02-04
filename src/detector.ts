@@ -25,9 +25,8 @@ export class FaceDetector {
     console.log('TensorFlow.js backend ready:', tf.getBackend());
 
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
-    const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshMediaPipeModelConfig = {
-      runtime: 'mediapipe',
-      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619',
+    const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshTfjsModelConfig = {
+      runtime: 'tfjs',
       refineLandmarks: true, // 虹彩検出を有効化
       maxFaces: 1,
     };
@@ -42,19 +41,21 @@ export class FaceDetector {
       throw new Error('Detector not initialized');
     }
 
-    // デバッグ: video要素の状態
-    console.log('Video readyState:', video.readyState);
-    console.log('Video dimensions:', video.videoWidth, 'x', video.videoHeight);
+    if (video.readyState !== 4 || video.videoWidth === 0) {
+      console.log('Video not ready yet');
+      return { irisCenter: null, faceDetected: false, keypoints: null };
+    }
 
     const faces = await this.detector.estimateFaces(video, {
       flipHorizontal: false,
+      staticImageMode: false,
     });
-
-    console.log('Detected faces:', faces.length);
 
     if (faces.length === 0) {
       return { irisCenter: null, faceDetected: false, keypoints: null };
     }
+
+    console.log('Detected faces:', faces.length);
 
     const face = faces[0];
     const keypoints = face.keypoints;
