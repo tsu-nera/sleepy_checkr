@@ -1,4 +1,9 @@
-import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
+// 共通のKeypoint型定義
+export interface Keypoint {
+  x: number;
+  y: number;
+  z?: number;
+}
 
 export interface FatigueScore {
   score: number; // 0-100
@@ -13,7 +18,7 @@ export interface FatigueDetector {
   /**
    * キーポイントを受け取って内部状態を更新
    */
-  update(keypoints: faceLandmarksDetection.Keypoint[]): void;
+  update(keypoints: Keypoint[]): void;
 
   /**
    * 現在の疲労スコアを計算して返す
@@ -52,7 +57,7 @@ export const EYE_LANDMARKS = {
  * Eye Aspect Ratio (EAR) を計算
  */
 export function calculateEAR(
-  keypoints: faceLandmarksDetection.Keypoint[],
+  keypoints: Keypoint[],
   indices: { p1: number; p2: number; p3: number; p4: number; p5: number; p6: number }
 ): number {
   const p1 = keypoints[indices.p1];
@@ -76,10 +81,7 @@ export function calculateEAR(
 /**
  * 2点間の距離を計算
  */
-export function distance(
-  p1: faceLandmarksDetection.Keypoint,
-  p2: faceLandmarksDetection.Keypoint
-): number {
+export function distance(p1: Keypoint, p2: Keypoint): number {
   const dx = p1.x - p2.x;
   const dy = p1.y - p2.y;
   return Math.sqrt(dx * dx + dy * dy);

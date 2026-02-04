@@ -1,5 +1,5 @@
-import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
 import {
+  Keypoint,
   FatigueDetector,
   FatigueScore,
   EYE_LANDMARKS,
@@ -37,7 +37,7 @@ export class PERCLOSDetector implements FatigueDetector {
     return 'PERCLOS';
   }
 
-  update(keypoints: faceLandmarksDetection.Keypoint[]): void {
+  update(keypoints: Keypoint[]): void {
     const leftEAR = calculateEAR(keypoints, EYE_LANDMARKS.LEFT);
     const rightEAR = calculateEAR(keypoints, EYE_LANDMARKS.RIGHT);
 
