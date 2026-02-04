@@ -27,7 +27,7 @@ export class FaceDetector {
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
     const detectorConfig: faceLandmarksDetection.MediaPipeFaceMeshMediaPipeModelConfig = {
       runtime: 'mediapipe',
-      solutionPath: import.meta.env.BASE_URL + 'mediapipe/face_mesh',
+      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619',
       refineLandmarks: true, // 虹彩検出を有効化
       maxFaces: 1,
     };
